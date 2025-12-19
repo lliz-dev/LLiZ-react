@@ -93,7 +93,7 @@ const styles = {
   input: {
     padding: "0.75rem 1rem",
     borderRadius: "8px",
-    border: "1px solid #1f2937",
+    border: "1px solid #d1d5db",
     color: "#000000ff",
     outline: "none",
     fontSize: "0.95rem",
