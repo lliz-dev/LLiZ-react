@@ -2,6 +2,7 @@ import "./styles/Profile.css";
 import {Link, useNavigate} from "react-router-dom";
 
 function Profile() {
+    const email = sessionStorage.getItem('email');
     const username = sessionStorage.getItem('username');
     const role = sessionStorage.getItem('role');
     const navigate = useNavigate();
@@ -42,6 +43,7 @@ function Profile() {
                     alt={`${username}'s profile`}
                 />
                 <h1 className="profile-username">{username}</h1>
+                <p className="profile-role">{email}</p>
                 <p className="profile-role">{role}</p>
             </div>
 
