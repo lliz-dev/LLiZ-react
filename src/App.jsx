@@ -6,14 +6,14 @@ import Home from "./Home.jsx";
 import "./styles/App.css"
 import Login from "./Screens/LoginSignup/Login.jsx";
 import SignUp from "./Screens/LoginSignup/SignUp.jsx";
-import BlogList from "./BlogList.jsx";
-import BlogPage from "./BlogPage.jsx";
+import BlogList from "./Screens/BlogStuff/BlogList.jsx";
+import BlogPage from "./Screens/BlogStuff/BlogPage.jsx";
 import Profile from "./Screens/Profile/Profile.jsx";
 import Admin from "./Admin.jsx";
 import ProfileEditor from "./Screens/Profile/ProfileEditor.jsx";
 import DeleteUserComp from "./DeleteUserComp.jsx";
-import BlogEditor from "./BlogEditor.jsx";
-import BlogMaker from "./BlogMaker.jsx";
+import BlogEditor from "./Screens/BlogStuff/BlogEditor.jsx";
+import BlogMaker from "./Screens/BlogStuff/BlogMaker.jsx";
 import ForgotPassword from "./Screens/LoginSignup/ForgotPassword.jsx";
 import ResetPassword from "./Screens/LoginSignup/ResetPassword.jsx";
 import ChangeEmail from "./Screens/Profile/ChangeEmail.jsx";

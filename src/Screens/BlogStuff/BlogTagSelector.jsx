@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import getTags from "./js/GetTags.js"; // Import your getTags function
+import getTags from "../../js/GetTags.js"; // Import your getTags function
 
 function BlogTagSelector({ onTagChange, initialTags = [] }) {
     const fallbackTags = [

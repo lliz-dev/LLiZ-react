@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Editor from "./Editor.jsx";
+import Editor from "../../Editor.jsx";
 import BlogTagSelector from "./BlogTagSelector.jsx";
 
 function BlogEditor() {

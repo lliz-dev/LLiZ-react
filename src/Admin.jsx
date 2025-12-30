@@ -1,4 +1,4 @@
-import BlogMaker from "./BlogMaker.jsx";
+import BlogMaker from "./Screens/BlogStuff/BlogMaker.jsx";
 import Unauth from "./Unauth.jsx";
 
 function Admin(){

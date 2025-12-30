@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import './styles/BlogPage.css';
+import '../../styles/BlogPage.css';
 import parse from 'html-react-parser';
 import { ReactCusdis } from 'react-cusdis'
-import CommentSection from "./CommentSection";
-import LikeDislike from "./LikeBtn";
+import CommentSection from "../../CommentSection.jsx";
+import LikeDislike from "../../LikeBtn.jsx";
 
 function BlogPage() {
     const { id } = useParams();
