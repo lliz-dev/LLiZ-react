@@ -30,8 +30,9 @@ function Login(){
             setPassword("");
 
             // Alert for successful login
-            alert(data.message);           // Navigate to home page after successful login
+            alert(data.message);
             navigate("/");
+            window.location.reload();
         } else {
             // If login fails
             alert("Login unsuccessful. Password or Username is incorrect.");
@@ -55,6 +56,10 @@ function Login(){
                 </p>
                 <p>
                     <input className={"formInputSubmit"} type={"submit"} value={"Login"} />
+                </p>
+
+                <p>
+                    <Link to={"/forgot-password"}>Forgot Password? Click here</Link>
                 </p>
                 <Link to={"/signup"}>Dont have an account? Sign Up here</Link>
 

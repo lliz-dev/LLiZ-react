@@ -1,8 +1,10 @@
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+  
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +27,9 @@ export default function ForgotPassword() {
 
       alert(data.message);
       setMessage(data.message);
+
+      navigate("/login");
+
     } catch (err) {
       setMessage(err.message);
     }

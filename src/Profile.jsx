@@ -30,6 +30,10 @@ function Profile() {
         navigate("/editprofile");
     }
 
+    const changeEmail = () =>{
+        navigate("/change-email");
+    }
+
     const forgotPassword = () =>{
         navigate("/forgot-password");
     }
@@ -48,12 +52,16 @@ function Profile() {
             </div>
 
             <div className="profile-actions">
-                <p>
+                {/* <p>
                     <button className="btn-edit" onClick={edit}>Edit Profile</button>
+                </p> */}
+
+                <p>
+                    <button className="btn-edit" onClick={changeEmail}>Change Email</button>
                 </p>
 
                 <p>
-                    <button className="btn-edit" onClick={forgotPassword}>Forgot Password</button>
+                    <button className="btn-edit" onClick={forgotPassword}>Change Password</button>
                 </p>
 
                 <p>

@@ -16,6 +16,7 @@ import BlogEditor from "./BlogEditor.jsx";
 import BlogMaker from "./BlogMaker.jsx";
 import ForgotPassword from "./ForgotPassword.jsx";
 import ResetPassword from "./ResetPassword.jsx";
+import ChangeEmail from "./ChangeEmail.jsx";
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
 
             <Routes>
                 <Route path="/" element={<Home/>} />
+
+                <Route path="/change-email" element={<ChangeEmail/>} />
 
                 <Route path="/reset-password/:token" element={<ResetPassword />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
