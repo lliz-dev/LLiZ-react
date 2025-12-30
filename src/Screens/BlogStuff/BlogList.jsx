@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import getBlogs from "../../js/GetBlogs.js";
 import getTags from "../../js/GetTags.js";
 import { Link } from "react-router-dom";
+import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 
 function BlogList() {
     const [blogs, setBlogs] = useState([]);
@@ -175,6 +176,7 @@ function TagSelector({ availableTags, selectedTags, setSelectedTags }) {
 
 function BlogCard({ blog }) {
     const [hover, setHover] = useState(false);
+    const [userReaction, setUserReaction] = useState(null); // 'like' | 'dislike' | null
     const likeCount = blog.likes?.length || 0;
     const dislikeCount = blog.dislikes?.length || 0;
 
@@ -183,6 +185,24 @@ function BlogCard({ blog }) {
         tmp.innerHTML = html;
         return tmp.textContent || tmp.innerText || "";
     }
+
+    const toggleReaction = (type) => {
+        setUserReaction(prev => (prev === type ? null : type));
+        // optionally update likes/dislikes counts here if you want
+    };
+
+    const buttonStyle = (isActive) => ({
+        backgroundColor: isActive ? "blueviolet" : "#f0f0f0",
+        border: "none",
+        padding: "4px 8px",
+        borderRadius: "6px",
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        gap: "4px",
+        color: "black", // always keep icon black
+        fontSize: "0.9rem"
+    });
 
     return (
         <li
@@ -200,10 +220,12 @@ function BlogCard({ blog }) {
                 </div>
             </Link>
             <div style={styles.footer}>
-                <span style={styles.likeIcon}>👍</span>
-                <span style={styles.likeCount}>{likeCount}</span>
-                <span style={styles.likeIcon}>👎</span>
-                <span style={styles.likeCount}>{dislikeCount}</span>
+                <button style={buttonStyle(userReaction === "like")} onClick={() => toggleReaction("like")}>
+                    <FaThumbsUp /> {likeCount}
+                </button>
+                <button style={buttonStyle(userReaction === "dislike")} onClick={() => toggleReaction("dislike")}>
+                    <FaThumbsDown /> {dislikeCount}
+                </button>
             </div>
         </li>
     );

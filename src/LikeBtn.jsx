@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 
-function LikeDislike({ blogId, userId,authorId }) {
+function LikeDislike({ blogId, userId, authorId }) {
     const [likes, setLikes] = useState(0);
     const [dislikes, setDislikes] = useState(0);
     const [userReaction, setUserReaction] = useState(null); // 'like' | 'dislike' | null
@@ -9,24 +10,18 @@ function LikeDislike({ blogId, userId,authorId }) {
         async function fetchBlog() {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs/${blogId}`);
             const data = await response.json();
-            
-            if(data.likes){
-                setLikes(data.likes.length);
-            }
-            if(data.dislikes){
-                setDislikes(data.dislikes.length);
-            }
-        }
 
+            if (data.likes) setLikes(data.likes.length);
+            if (data.dislikes) setDislikes(data.dislikes.length);
+        }
         fetchBlog();
     }, [blogId]);
-    
 
     const toggleReaction = async (type) => {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/bloglikes/${blogId}/${type}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userId,authorId }),
+            body: JSON.stringify({ userId, authorId }),
         });
         const data = await res.json();
         setLikes(data.likes);
@@ -34,34 +29,33 @@ function LikeDislike({ blogId, userId,authorId }) {
         setUserReaction(prev => (prev === type ? null : type));
     };
 
+    const buttonStyle = (isActive, activeBg) => ({
+        backgroundColor: isActive ? activeBg : "#f0f0f0",
+        color: "black", // always keep icon black
+        border: "none",
+        padding: "6px 10px",
+        borderRadius: "6px",
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        gap: "4px",
+        fontSize: "0.9rem"
+    });
+
     return (
         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             <button
-                style={{
-                    backgroundColor: userReaction === "like" ? "blueviolet" : "#f0f0f0",
-                    color: userReaction === "like" ? "#fff" : "#000",
-                    border: "none",
-                    padding: "6px 12px",
-                    borderRadius: "6px",
-                    cursor: "pointer"
-                }}
+                style={buttonStyle(userReaction === "like", "blueviolet")}
                 onClick={() => toggleReaction("like")}
             >
-                👍 {likes}
+                <FaThumbsUp /> {likes}
             </button>
 
             <button
-                style={{
-                    backgroundColor: userReaction === "dislike" ? "red" : "#f0f0f0",
-                    color: userReaction === "dislike" ? "#fff" : "#000",
-                    border: "none",
-                    padding: "6px 12px",
-                    borderRadius: "6px",
-                    cursor: "pointer"
-                }}
+                style={buttonStyle(userReaction === "dislike", "blueviolet")}
                 onClick={() => toggleReaction("dislike")}
             >
-                👎 {dislikes}
+                <FaThumbsDown /> {dislikes}
             </button>
         </div>
     );

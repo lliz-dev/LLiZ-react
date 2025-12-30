@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import getBlogs from "./js/GetBlogs.js";
 import { useNavigate } from "react-router-dom";
 import { Card } from "react-bootstrap";
+import { FaThumbsUp, FaThumbsDown } from "react-icons/fa"; // Import icons
 import './styles/RecentPosts.css';
 
 function RecentPosts() {
@@ -11,20 +12,16 @@ function RecentPosts() {
     const navigate = useNavigate();
 
     function stripHtml(html) {
-    const tmp = document.createElement("div");
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
-}
-
+        const tmp = document.createElement("div");
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || "";
+    }
 
     useEffect(() => {
         async function fetchBlogs() {
-            console.log("Fetching blogs...");
             try {
                 const data = await getBlogs();
-                if (!data) {
-                    throw new Error("Failed to fetch blogs. Please check your connection.");
-                }
+                if (!data) throw new Error("Failed to fetch blogs. Please check your connection.");
                 setBlogs(data);
             } catch (error) {
                 console.error("Error during fetch:", error.message);
@@ -35,10 +32,6 @@ function RecentPosts() {
         }
         fetchBlogs();
     }, []);
-
-    console.log("Loading state:", loading);
-    console.log("Error state:", error);
-    console.log("Blogs state:", blogs);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -58,12 +51,19 @@ function RecentPosts() {
                     recentBlogs.map((blog) => {
                         const likeCount = blog.likes ? blog.likes.length : 0;
                         const dislikeCount = blog.dislikes ? blog.dislikes.length : 0;
-                        
+
                         return (
-                            <Card className="recentpost" key={blog._id} onClick={() => handleClick(blog)} style={{ position: "relative" }}>
+                            <Card
+                                className="recentpost"
+                                key={blog._id}
+                                onClick={() => handleClick(blog)}
+                                style={{ position: "relative", cursor: "pointer" }}
+                            >
                                 <Card.Body>
                                     <Card.Title>{blog.title}</Card.Title>
-                                    <Card.Text>    {stripHtml(blog.content).slice(0, 150) + (blog.content.length > 150 ? "..." : "")}</Card.Text>
+                                    <Card.Text>
+                                        {stripHtml(blog.content).slice(0, 150) + (blog.content.length > 150 ? "..." : "")}
+                                    </Card.Text>
                                 </Card.Body>
                                 <div style={{
                                     position: "absolute",
@@ -75,9 +75,14 @@ function RecentPosts() {
                                     backgroundColor: "rgba(255, 255, 255, 0.9)",
                                     padding: "6px 10px",
                                     borderRadius: "6px",
+                                    alignItems: "center"
                                 }}>
-                                    <span>👍 {likeCount}</span>
-                                    <span>👎 {dislikeCount}</span>
+                                    <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                                        <FaThumbsUp /> {likeCount}
+                                    </span>
+                                    <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                                        <FaThumbsDown /> {dislikeCount}
+                                    </span>
                                 </div>
                             </Card>
                         );
