@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { sendEmail, alterEmail } from "./EmailFunctions";
+import { sendEmail, alterEmail } from "../../js/EmailFunctions.js";
 import { useNavigate } from "react-router-dom";
 
 export default function ChangeEmail() {

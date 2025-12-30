@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import getComments from "./GetComments";
-import postComment from "./PostComment";
-import deleteComment from "./DeleteComment";
+import getComments from "./js/GetComments.js";
+import postComment from "./js/PostComment.js";
+import deleteComment from "./js/DeleteComment.js";
 
 function CommentSection({ blogId }) {
     const [comments, setComments] = useState([]);

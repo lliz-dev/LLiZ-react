@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import getBlogs from "./GetBlogs.js";
+import getBlogs from "./js/GetBlogs.js";
 import { useNavigate } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import './styles/RecentPosts.css';

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // <-- import useNavigate
 import Editor from "./Editor.jsx";
-import postBlog from "./PostBlog.js";
+import postBlog from "./js/PostBlog.js";
 import BlogTagSelector from "./BlogTagSelector.jsx";
 
 function BlogMaker() {

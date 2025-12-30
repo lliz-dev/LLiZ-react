@@ -1,7 +1,7 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
-import './styles/Form.css'
-import postUser from "./PostUser.js";
+import '../../styles/Form.css'
+import postUser from "../../js/PostUser.js";
 
 function SignUp(){
     const[email,setEmail] = useState("");

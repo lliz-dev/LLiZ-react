@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import getWordOfDay from "./getWordOfDay.js";
+import getWordOfDay from "./js/getWordOfDay.js";
 //import './styles/WordOfTheDay.css'
 
 function WordOfTheDay() {

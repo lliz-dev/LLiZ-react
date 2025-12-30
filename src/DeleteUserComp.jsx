@@ -1,4 +1,4 @@
-import deleteUser from "./deleteUser";
+import deleteUser from "./js/deleteUser.js";
 import {useState} from "react";
 import './styles/Form.css'
 import {useNavigate} from "react-router-dom";

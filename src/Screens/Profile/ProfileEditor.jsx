@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import editUser from "./EditUser.js";
+import editUser from "../../js/EditUser.js";
 
 function ProfileEditor() {
     const [email, setEmail] = useState("");

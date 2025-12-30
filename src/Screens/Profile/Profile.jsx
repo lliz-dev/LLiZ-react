@@ -1,4 +1,4 @@
-import "./styles/Profile.css";
+import "../../styles/Profile.css";
 import {Link, useNavigate} from "react-router-dom";
 
 function Profile() {

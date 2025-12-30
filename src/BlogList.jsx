@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import getBlogs from "./GetBlogs.js";
+import getBlogs from "./js/GetBlogs.js";
 import { Link } from "react-router-dom";
 
 function BlogList() {

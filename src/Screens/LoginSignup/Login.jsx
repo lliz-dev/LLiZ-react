@@ -1,7 +1,7 @@
 import {useState} from "react";
-import './styles/Form.css'
+import '../../styles/Form.css'
 import {Link, useNavigate} from "react-router-dom";
-import postUserLogin from "./PostUserLogin.js";
+import postUserLogin from "../../js/PostUserLogin.js";
 
 function Login(){
     const[username,setUsername] = useState("");

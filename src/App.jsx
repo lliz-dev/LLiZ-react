@@ -4,19 +4,19 @@ import About from "./About.jsx";
 import Navigation from "./Navigation.jsx";
 import Home from "./Home.jsx";
 import "./styles/App.css"
-import Login from "./Login.jsx";
-import SignUp from "./SignUp.jsx";
+import Login from "./Screens/LoginSignup/Login.jsx";
+import SignUp from "./Screens/LoginSignup/SignUp.jsx";
 import BlogList from "./BlogList.jsx";
 import BlogPage from "./BlogPage.jsx";
-import Profile from "./Profile.jsx";
+import Profile from "./Screens/Profile/Profile.jsx";
 import Admin from "./Admin.jsx";
-import ProfileEditor from "./ProfileEditor.jsx";
+import ProfileEditor from "./Screens/Profile/ProfileEditor.jsx";
 import DeleteUserComp from "./DeleteUserComp.jsx";
 import BlogEditor from "./BlogEditor.jsx";
 import BlogMaker from "./BlogMaker.jsx";
-import ForgotPassword from "./ForgotPassword.jsx";
-import ResetPassword from "./ResetPassword.jsx";
-import ChangeEmail from "./ChangeEmail.jsx";
+import ForgotPassword from "./Screens/LoginSignup/ForgotPassword.jsx";
+import ResetPassword from "./Screens/LoginSignup/ResetPassword.jsx";
+import ChangeEmail from "./Screens/Profile/ChangeEmail.jsx";
 
 function App() {
   return (
