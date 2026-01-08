@@ -34,7 +34,7 @@ function RecentPosts() {
     }, []);
 
     if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    if (error) return <div>Error occurred while fetching posts, please refresh or check your connection.</div>;
     if (!blogs || blogs.length === 0) return <div>No blogs found.</div>;
 
     const recentBlogs = blogs.slice(0, 3);
