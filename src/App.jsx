@@ -41,9 +41,6 @@ function App() {
                 <Route path="/about" element={<About/>} />
                 <Route path="/deleteAccount" element={<DeleteUserComp/>} />
 
-                    {/* Route for the list of blogs */}
-                    <Route path="/" element={<BlogList/>} />
-
                     {/* Route to edit a blog */}
                     <Route path="/edit/:id" element={<BlogEditor/>} />
 
