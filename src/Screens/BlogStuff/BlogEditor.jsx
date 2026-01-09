@@ -45,33 +45,39 @@ function BlogEditor() {
     const handleTagChange = (selectedTags) => setTags(selectedTags);
 
     const submitBlog = async (event) => {
-        event.preventDefault();
+    event.preventDefault();
 
-        if (tags.length === 0) {
-            alert("Please select at least one tag before submitting the blog.");
-            return;
+    if (tags.length === 0) {
+        alert("Please select at least one tag before submitting the blog.");
+        return;
+    }
+
+    const tagNames = tags.map(tag => tag.tag_name); // send tag names
+
+    try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${sessionStorage.getItem('token')}`
+            },
+            body: JSON.stringify({ title, content, tags: tagNames, authorId: loggedInUserId })
+        });
+
+        const resData = await response.json();
+
+        if (response.ok) {
+            alert("Blog updated successfully!");
+            navigate(`/posts/${id}`);
+        } else {
+            console.error(resData);
+            alert("Failed to update blog: " + (resData.error || "Unknown error"));
         }
+    } catch (err) {
+        alert("Error updating blog: " + err.message);
+    }
+};
 
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs/${id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                     "Authorization": `Bearer ${sessionStorage.getItem('token')}`
-                },
-                body: JSON.stringify({ title, content, tags,authorId:loggedInUserId })
-            });
-
-            if (response.ok) {
-                alert("Blog updated successfully!");
-                navigate(`/posts/${id}`);
-            } else {
-                alert("Failed to update blog");
-            }
-        } catch (err) {
-            alert("Error updating blog: " + err.message);
-        }
-    };
 
     if (loading) return <div style={{ padding: "20px" }}>Loading...</div>;
     if (error) return <div style={{ padding: "20px", color: "red" }}>{error}</div>;
