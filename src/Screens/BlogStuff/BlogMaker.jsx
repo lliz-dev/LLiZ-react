@@ -16,6 +16,13 @@ function BlogMaker() {
     const handleContentChange = (value) => setContent(value);
     const handleTagChange = (selectedTags) => setTags(selectedTags);
 
+    useEffect(() => {
+        if (!author || !authorid) {
+            alert("You must be logged in to create a blog post.");
+            navigate("/login"); 
+        }
+    }, []);
+
     const submitBlog = async (event) => {
         event.preventDefault();
 
