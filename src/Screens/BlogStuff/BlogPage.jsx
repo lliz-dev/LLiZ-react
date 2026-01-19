@@ -4,6 +4,7 @@ import '../../styles/BlogPage.css';
 import parse from 'html-react-parser';
 import CommentSection from "../../CommentSection.jsx";
 import LikeDislike from "../../LikeBtn.jsx";
+import { Helmet } from "react-helmet-async";
 
 function BlogPage() {
     const { id } = useParams();
@@ -163,93 +164,117 @@ function BlogPage() {
         },
     };
 
-    return (
-        <div style={{ padding: 20 }}>
-            <div style={styles.header}>
-                <h1 style={{ margin: 0 }}>{blog.title}</h1>
+   return (
+    <>
+    <Helmet>
+    <title>{blog.title} | YourSiteName</title>
+    <meta
+        name="description"
+        content={blog.excerpt || blog.content.replace(/<[^>]+>/g, '').slice(0, 160)}
+    />
+    <link rel="canonical" href={shareUrl} />
+    </Helmet>
 
-                <div style={styles.buttonGroup}>
-                    <button
-                        style={styles.shareButton}
-                        onClick={() => setShowSharePopup(true)}
-                    >
-                        Share
-                    </button>
+    <article style={{ padding: 20 }}>
+        {/* SEO Header */}
+        <header style={styles.header}>
+            <h1 style={{ margin: 0 }}>{blog.title}</h1>
 
-                    {isAuthor && (
-                        <>
-                            <Link to={`/edit/${id}`} style={styles.editButton}>
-                                Edit Post
-                            </Link>
-                            <button
-                                onClick={handleDeleteBlog}
-                                style={styles.deleteButton}
-                            >
-                                Delete Post
-                            </button>
-                        </>
-                    )}
-                </div>
-            </div>
-
-            <p className="createdBy">By {blog.author}</p>
-
-            <div className="tags">
-                {tags.map((tag, index) => (
-                    <div key={index} className="blogTag">
-                        {tag.tag_name}
-                    </div>
-                ))}
-            </div>
-
-            <div>{parse(blog.content)}</div>
-
-            <br />
-            <LikeDislike
-                blogId={id}
-                authorId={blog.authorId}
-                initialLikes={blog.likes?.length || blog.likes || 0}
-            />
-
-            <CommentSection blogId={id} />
-
-            {showSharePopup && (
-                <div
-                    style={styles.overlay}
-                    onClick={() => setShowSharePopup(false)}
+            <div style={styles.buttonGroup}>
+                <button
+                    style={styles.shareButton}
+                    onClick={() => setShowSharePopup(true)}
                 >
-                    <div
-                        style={styles.popup}
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <div style={styles.popupHeader}>
-                            <h3 style={{ margin: 0 }}>Share this post</h3>
-                            <button
-                                style={styles.closeBtn}
-                                onClick={() => setShowSharePopup(false)}
-                            >
-                                ✕
-                            </button>
-                        </div>
+                    Share
+                </button>
 
-                        <input
-                            type="text"
-                            value={shareUrl}
-                            readOnly
-                            style={styles.copyInput}
-                        />
-
+                {isAuthor && (
+                    <>
+                        <Link to={`/edit/${id}`} style={styles.editButton}>
+                            Edit Post
+                        </Link>
                         <button
-                            style={styles.copyBtn}
-                            onClick={handleCopyLink}
+                            onClick={handleDeleteBlog}
+                            style={styles.deleteButton}
                         >
-                            Copy Link
+                            Delete Post
+                        </button>
+                    </>
+                )}
+            </div>
+        </header>
+
+        {/* Author + Meta Info */}
+        <p className="createdBy">
+            By <strong>{blog.author}</strong>
+        </p>
+
+        {/* Tags = internal links */}
+        <div className="tags">
+            {tags.map((tag, index) => (
+                <span key={index} className="blogTag">
+                    {tag.tag_name}
+                </span>
+            ))}
+        </div>
+
+
+        {/* Blog content */}
+        <section>
+            {parse(blog.content)}
+        </section>
+
+        <br />
+
+        {/* Engagement */}
+        <LikeDislike
+            blogId={id}
+            authorId={blog.authorId}
+            initialLikes={blog.likes?.length || blog.likes || 0}
+        />
+
+        <CommentSection blogId={id} />
+
+        {/* Share Popup */}
+        {showSharePopup && (
+            <div
+                style={styles.overlay}
+                onClick={() => setShowSharePopup(false)}
+            >
+                <div
+                    style={styles.popup}
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <div style={styles.popupHeader}>
+                        <h3 style={{ margin: 0 }}>Share this post</h3>
+                        <button
+                            style={styles.closeBtn}
+                            onClick={() => setShowSharePopup(false)}
+                        >
+                            ✕
                         </button>
                     </div>
+
+                    <input
+                        type="text"
+                        value={shareUrl}
+                        readOnly
+                        style={styles.copyInput}
+                    />
+
+                    <button
+                        style={styles.copyBtn}
+                        onClick={handleCopyLink}
+                    >
+                        Copy Link
+                    </button>
                 </div>
-            )}
-        </div>
-    );
+            </div>
+        )}
+    </article>
+    </>  
+);
+
 }
 
 export default BlogPage;
