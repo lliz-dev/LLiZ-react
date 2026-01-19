@@ -8,34 +8,45 @@ import LikeDislike from "../../LikeBtn.jsx";
 function BlogPage() {
     const { id } = useParams();
     const navigate = useNavigate();
+
     const [blog, setBlog] = useState(null);
-    const [tags,setTags] = useState([]);
+    const [tags, setTags] = useState([]);
+    const [showSharePopup, setShowSharePopup] = useState(false);
+
+    const loggedInUserId = JSON.parse(sessionStorage.getItem('userid'));
+    const shareUrl = window.location.href;
 
     useEffect(() => {
         async function fetchBlog() {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs/${id}`);
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/blogs/${id}`
+            );
             const data = await response.json();
             setBlog(data);
-            setTags(data.tags.map(tag => tag));
-            console.log(data);
+            setTags(data.tags || []);
         }
 
         fetchBlog();
     }, [id]);
 
     const handleDeleteBlog = async () => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this blog post? This action cannot be undone.");
+        const confirmDelete = window.confirm(
+            "Are you sure you want to delete this blog post? This action cannot be undone."
+        );
         if (!confirmDelete) return;
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/blogs/${id}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${sessionStorage.getItem('token')}`
-                },
-                body: JSON.stringify({authorId:loggedInUserId })
-            });
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/blogs/${id}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${sessionStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ authorId: loggedInUserId })
+                }
+            );
 
             if (response.ok) {
                 alert("Blog post deleted successfully!");
@@ -48,9 +59,18 @@ function BlogPage() {
         }
     };
 
+    const handleCopyLink = async () => {
+        try {
+            await navigator.clipboard.writeText(shareUrl);
+            alert("Link copied to clipboard!");
+            setShowSharePopup(false);
+        } catch {
+            alert("Failed to copy link");
+        }
+    };
+
     if (!blog) return <div>Loading...</div>;
 
-    const loggedInUserId = JSON.parse(sessionStorage.getItem('userid'));
     const isAuthor = String(blog.authorId) === String(loggedInUserId);
 
     const styles = {
@@ -59,6 +79,10 @@ function BlogPage() {
             justifyContent: "space-between",
             alignItems: "center",
             marginBottom: "20px",
+            gap: "10px",
+        },
+        buttonGroup: {
+            display: "flex",
             gap: "10px",
         },
         editButton: {
@@ -70,7 +94,6 @@ function BlogPage() {
             cursor: "pointer",
             fontSize: "1rem",
             textDecoration: "none",
-            display: "inline-block",
         },
         deleteButton: {
             backgroundColor: "#dc3545",
@@ -81,46 +104,152 @@ function BlogPage() {
             cursor: "pointer",
             fontSize: "1rem",
         },
-        buttonGroup: {
+        shareButton: {
+            backgroundColor: "#222",
+            color: "white",
+            padding: "8px 16px",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+            fontSize: "1rem",
+        },
+        overlay: {
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0,0,0,0.4)",
             display: "flex",
-            gap: "10px",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+        },
+        popup: {
+            backgroundColor: "#fff",
+            padding: "20px",
+            borderRadius: "10px",
+            width: "100%",
+            maxWidth: "400px",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+        },
+        popupHeader: {
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "10px",
+        },
+        copyInput: {
+            width: "100%",
+            padding: "8px",
+            marginBottom: "10px",
+            borderRadius: "6px",
+            border: "1px solid #ccc",
+        },
+        closeBtn: {
+            background: "none",
+            border: "none",
+            fontSize: "1.2rem",
+            cursor: "pointer",
+        },
+        copyBtn: {
+            width: "100%",
+            backgroundColor: "blueviolet",
+            color: "white",
+            padding: "10px",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
         },
     };
 
     return (
-        <div style={{padding: 20}}>
+        <div style={{ padding: 20 }}>
             <div style={styles.header}>
                 <h1 style={{ margin: 0 }}>{blog.title}</h1>
-                {isAuthor && (
-                    <div style={styles.buttonGroup}>
-                        <Link to={`/edit/${id}`} style={styles.editButton}>
-                            Edit Post
-                        </Link>
-                        <button onClick={handleDeleteBlog} style={styles.deleteButton}>
-                            Delete Post
-                        </button>
+
+                <div style={styles.buttonGroup}>
+                    <button
+                        style={styles.shareButton}
+                        onClick={() => setShowSharePopup(true)}
+                    >
+                        Share
+                    </button>
+
+                    {isAuthor && (
+                        <>
+                            <Link to={`/edit/${id}`} style={styles.editButton}>
+                                Edit Post
+                            </Link>
+                            <button
+                                onClick={handleDeleteBlog}
+                                style={styles.deleteButton}
+                            >
+                                Delete Post
+                            </button>
+                        </>
+                    )}
+                </div>
+            </div>
+
+            <p className="createdBy">By {blog.author}</p>
+
+            <div className="tags">
+                {tags.map((tag, index) => (
+                    <div key={index} className="blogTag">
+                        {tag.tag_name}
                     </div>
-                )}
+                ))}
             </div>
-            <div>
-                <p className={"createdBy"}>By {blog.author}</p>
-                <div className={"tags"}>
-                    {
-                        tags.map(function (currentTag, index) {
-                            return (<div key={index} className={"blogTag"}>{currentTag.tag_name}</div>)
-                        })
-                    }
-                </div>
-                <div>
-                    {parse(blog.content)}
-                </div>
-            </div>
-            <br/>
-            <br/>
-            <LikeDislike blogId={id} authorId={blog.authorId} initialLikes={blog.likes?.length || blog.likes || 0} />
+
+            <div>{parse(blog.content)}</div>
+
+            <br />
+            <LikeDislike
+                blogId={id}
+                authorId={blog.authorId}
+                initialLikes={blog.likes?.length || blog.likes || 0}
+            />
 
             <CommentSection blogId={id} />
+
+            {showSharePopup && (
+                <div
+                    style={styles.overlay}
+                    onClick={() => setShowSharePopup(false)}
+                >
+                    <div
+                        style={styles.popup}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div style={styles.popupHeader}>
+                            <h3 style={{ margin: 0 }}>Share this post</h3>
+                            <button
+                                style={styles.closeBtn}
+                                onClick={() => setShowSharePopup(false)}
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        <input
+                            type="text"
+                            value={shareUrl}
+                            readOnly
+                            style={styles.copyInput}
+                        />
+
+                        <button
+                            style={styles.copyBtn}
+                            onClick={handleCopyLink}
+                        >
+                            Copy Link
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
+
 export default BlogPage;
